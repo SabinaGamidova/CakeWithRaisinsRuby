@@ -13,21 +13,26 @@ class Piece
     @raisin = raisin
   end
 
-  def inside(xx, yy)
-    w = @width
-    h = @height
-    if (w | h) < 0
+    def inside(x_check, y_check)
+    width = @width
+    height = @height
+
+    if (width | height) < 0
       return false
     end
+
     x = @x
     y = @y
-    if xx < x || yy < y
+
+    if x_check < x || y_check < y
       return false
     end
-    w += x
-    h += y
-    ((w < x || w > xx) &&
-      (h < y || h > yy))
+
+    width += x
+    height += y
+
+    ((width < x || width > x_check) &&
+    (height < y || height > y_check))
   end
 
 
@@ -36,26 +41,30 @@ class Piece
   end
 
 
-  def intersects(rectangle)
-    tw = @width
-    th = @height
-    rw = rectangle.width
-    rh = rectangle.height
-    if rw <= 0 || rh <= 0 || tw <= 0 || th <= 0
+    def intersects(rectangle)
+    self_width = @width
+    self_height = @height
+    other_width = rectangle.width
+    other_height = rectangle.height
+
+    if other_width <= 0 || other_height <= 0 || self_width <= 0 || self_height <= 0
       return false
     end
-    tx = @x
-    ty = @y
-    rx = rectangle.x
-    ry = rectangle.y
-    rw += rx
-    rh += ry
-    tw += tx
-    th += ty
-    ((rw < rx || rw > tx) &&
-      (rh < ry || rh > ty) &&
-      (tw < tx || tw > rx) &&
-      (th < ty || th > ry))
+
+    self_x = @x
+    self_y = @y
+    other_x = rectangle.x
+    other_y = rectangle.y
+
+    other_xw = other_x + other_width
+    other_yh = other_y + other_height
+    self_xw = self_x + self_width
+    self_yh = self_y + self_height
+
+    ((other_xw < other_x || other_xw > self_x) &&
+    (other_yh < other_y || other_yh > self_y) &&
+    (self_xw < self_x || self_xw > other_x) &&
+    (self_yh < self_y || self_yh > other_y))
   end
 
 

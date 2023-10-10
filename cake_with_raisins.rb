@@ -113,7 +113,7 @@ class CakeSolver
   end
 
   
-  def is_one_rasin(piece1, piece2)
+  def has_single_raisin(piece1, piece2)
     first_piece = false
     second_piece = false
 
@@ -146,15 +146,15 @@ class CakeSolver
   end
 
 
-  def does_overlap(first_piece, second_piece)
-    !first_piece.intersects(second_piece) && is_one_rasin(first_piece, second_piece)
+  def pieces_overlap(first_piece, second_piece)
+    !first_piece.intersects(second_piece) && has_single_raisin(first_piece, second_piece)
   end
 
 
-  def do_pieces_overlap(pieces)
+  def pieces_overlap_in_collection(pieces)
     (0...pieces.size).each { |i|
       (i + 1...pieces.size).each { |j|
-        if does_overlap(pieces[i], pieces[j])
+        if pieces_overlap(pieces[i], pieces[j])
           next
         else
           return false
@@ -192,7 +192,7 @@ class CakeSolver
 
   def find_all_solutions(all_available_pieces, solutions, current_solution, raisinsAmount, start_index)
     if current_solution.size == raisinsAmount
-      if do_pieces_overlap(current_solution)
+      if pieces_overlap_in_collection(current_solution)
         solutions.append(current_solution.clone)
       end
       return
